@@ -25,6 +25,7 @@ public class LoginPage extends AbstractPage{
     private By accountNotFoundMessage = By.xpath("//li[text()='No customer account found']");
 
     // metodi i akcii
+    //  Method for entering user credentials
     public void login(String email, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput)).sendKeys(email);
         wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(password);
