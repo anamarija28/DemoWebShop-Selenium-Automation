@@ -7,8 +7,6 @@ import org.testng.asserts.SoftAssert;
 
 public class T01_RegisterTest extends BaseClass {
 
-//    public static String uniqueEmail = "testuser" + System.currentTimeMillis() + "@mailinator.com";
-
     @Test
     public void testValidRegistration() {
         String email = "testuser" + System.currentTimeMillis() + "@mailinator.com";
@@ -16,8 +14,6 @@ public class T01_RegisterTest extends BaseClass {
         basePage.clickRegisterLink();
         registerPage.register("Ime", "Prezime", email, "lozinka123@", "lozinka123@");
 
-//        String actualSuccessMessage = registerResultPage.successRegistration();
-//        Assert.assertEquals(actualSuccessMessage, "Your registration completed");
           Assert.assertEquals(registerResultPage.successRegistration(), "Your registration completed");
 
     }
@@ -38,9 +34,6 @@ public class T01_RegisterTest extends BaseClass {
         basePage.clickRegisterLink();
         registerPage.register("Ime", "Prezime", email, "lozinka123@", "lozinka123@");
 
-
-//      String actualExistingEmailMessage = registerPage.getRegistrationErrorMessage();
-//      Assert.assertEquals(actualExistingEmailMessage, "The specified email already exists");
         Assert.assertTrue(registerPage.getRegistrationErrorMessage().contains("The specified email already exists"));
 
     }
@@ -85,7 +78,6 @@ public class T01_RegisterTest extends BaseClass {
         registerPage.register("Karlis", "Laurant", "karlis@yahoo.com", "Pas12", "Pas12");
 
         Assert.assertEquals(registerPage.getPasswordLengthValidation(), "The password should have at least 6 characters.");
-
     }
 
 }

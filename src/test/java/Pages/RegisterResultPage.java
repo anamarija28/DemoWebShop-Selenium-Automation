@@ -10,11 +10,9 @@ public class RegisterResultPage extends AbstractPage{
         super(driver);
     }
 
-    // lokatori
     private By successMessage = By.xpath("//div[@class='result']");
 
 
-    // metodi i akcii
     public String successRegistration(){
         return wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage)).getText();
     }

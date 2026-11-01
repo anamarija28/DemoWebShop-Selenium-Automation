@@ -85,17 +85,17 @@ public class ProductListingPage extends AbstractPage {
     public List<Double> getProductPrices() {
         List<WebElement> priceElements = driver.findElements(productPrices);
 
-        // правиме празна листа каде што ќе ги чуваме само чистите бројки, цените како Double
-        // оваа листа ни треба бидејќи со WebElement не можиме да правиме мат.операции (сортирање),
-        // а со Double може
+        // Create an empty list to store only the numeric values (prices as Double).
+        // We need this list because we cannot perform mathematical operations (such as sorting) on WebElements,
+        // but we can perform them on Double values.
         List<Double> prices = new ArrayList<>();
 
         for (WebElement el : priceElements) {
             String text = el.getText().replaceAll("[^0-9.]", "");
 
-            // со ова се проверува дали променливата text содржи некакви карактери откако сме го
-            // поминале низ филтерот за чистење replaceAll.
-            // Ако текстот НЕ Е празен, тогаш направи го следново:
+            // This checks whether the text variable contains any characters after applying
+            // the replaceAll cleaning filter.
+            // If the text is NOT empty, then do the following:
             if (!text.isEmpty()) {
                 prices.add(Double.parseDouble(text));
             }
@@ -103,20 +103,17 @@ public class ProductListingPage extends AbstractPage {
         return prices;
     }
 
-    // DISPLAY PER PAGE - DROPDOWN
     public void selectDisplayPerPageOptions(String pageSize) {
         WebElement pageSizeDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(productsPerPageDropdown));
 
         Select select = new Select(pageSizeDropdown);
         select.selectByVisibleText(pageSize);
-
     }
 
     public int getNumberOfProductsDisplayed() {
         return driver.findElements(productNameLinks).size();
     }
 
-    // VIEW AS - DROPDOWN
     public void selectViewMode(String optionText) {
         WebElement pageSizeDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(viewModeDropdown));
 
@@ -147,19 +144,16 @@ public class ProductListingPage extends AbstractPage {
             WebElement next = wait.until(ExpectedConditions.elementToBeClickable(nextPageButton));
             next.click();
 
-            // Чекаме да се освежи содржината за да не го најде истото копче пребрзо
             wait.until(ExpectedConditions.stalenessOf(next));
         }
     }
 
-    // Метод кој се враќа до првата страница
     public void goToFirstPage() {
         while(driver.findElements(previousPageButton).size() > 0) {
             WebElement previous = wait.until(ExpectedConditions.elementToBeClickable(previousPageButton));
             previous.click();
 
             wait.until(ExpectedConditions.stalenessOf(previous));
-
         }
     }
 
@@ -170,6 +164,5 @@ public class ProductListingPage extends AbstractPage {
     public boolean isPreviousPageButtonDisplayed() {
         return !driver.findElements(previousPageButton).isEmpty();
     }
-
 
 }

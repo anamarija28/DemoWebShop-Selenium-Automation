@@ -15,28 +15,27 @@ public class T04_AddToCartTest extends BaseClass {
         productListingPage.addProductToCart("TCP Instructor Led Training");
     }
 
-
-
     // APPAREL & SHOES
     @Test (description = "Apparel & Shoes")
     public void addToCartThroughSearch() {
 
         basePage.searchProduct(searchTerm);
 
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("q=" + searchTerm));
+        // URL validation
+        boolean isUrlCorrect = searchResultsPage.isUrlContaining("q=" + searchTerm);
+        Assert.assertTrue(isUrlCorrect, "The URL does not contain the search term");
 
+        // Validation that the results are displayed
         boolean resultsCount = searchResultsPage.areProductsDisplayed();
         Assert.assertTrue(resultsCount, "The products for the searched keyword are not displayed!");
 
+        // Validation of the search field
         String actualProduct = searchResultsPage.getSearchFieldValue();
-        Assert.assertEquals(actualProduct, "jeans");
+        Assert.assertEquals(actualProduct, searchTerm);
 
-        searchResultsPage.clickAddToCartButton();
-
-        String actualSuccessMessage = searchResultsPage.getSuccessMessage();
+        // Add the product to the cart
+        String actualSuccessMessage = searchResultsPage.addProductToCart("Blue Jeans");
         Assert.assertEquals(actualSuccessMessage, "The product has been added to your shopping cart");
-
     }
 
     // COMPUTERS - ACCESSORIES
@@ -54,14 +53,12 @@ public class T04_AddToCartTest extends BaseClass {
     }
 
     @Test
-    public void addSameProductTwice()throws InterruptedException {
+    public void addSameProductTwice() {
 
         basePage.hoverComputersAndClickAccessories();
 
-        // Прво додавање
         productListingPage.addProductToCart("TCP Instructor Led Training");
 
-        // Второ додавање (пораката ја враќа методот)
         String actualSuccessMessage = productListingPage.addProductToCart("TCP Instructor Led Training");
         Assert.assertEquals(actualSuccessMessage, "The product has been added to your shopping cart");
 
@@ -73,7 +70,7 @@ public class T04_AddToCartTest extends BaseClass {
     }
 
     @Test
-    public void addMultipleDifferentProducts() throws InterruptedException {
+    public void addMultipleDifferentProducts() {
 
         addTcpCoachingDayToCart();
         productListingPage.addProductToCart("TCP Public Complete");
@@ -90,7 +87,7 @@ public class T04_AddToCartTest extends BaseClass {
         Assert.assertTrue(actualFlyoutText.contains("6 item(s)"), "In the flyout menu does not write Quantity: 6!. It is: " + actualFlyoutText);
 
 
-        // Ова ќе го стопира тестот додека не се појави (6), или ќе фрли Timeout по 10 секунди
+        // This will pause the test until 6 appears, or throw a timeout exception after 10 seconds
         String actualHeaderQty2 = basePage.getHeaderCartQty("(6)");
         Assert.assertEquals(actualHeaderQty2, "(6)", "Бројот во хедерот не е 6!");
 
@@ -108,15 +105,12 @@ public class T04_AddToCartTest extends BaseClass {
         String actualProductTitle = configurableProductPage.getProductTitle();
         Assert.assertTrue(actualProductTitle.contains("Build your own computer"), "The product is incorrect");
 
-        // Селектирање опции
         configurableProductPage.selectProcessor("2.5 GHz Intel Pentium Dual-Core E2200 [+15.00]");
         configurableProductPage.selectRamByValue("17");
 
-        // Radio buttons
         configurableProductPage.selectHdd400Gb();
         configurableProductPage.selectWindows10();
 
-        // Check options
         configurableProductPage.selectOffice();
         configurableProductPage.selectAcrobatReader();
         configurableProductPage.selectTotalCommander();
@@ -125,7 +119,6 @@ public class T04_AddToCartTest extends BaseClass {
 
         String successMsg = configurableProductPage.getSuccessMessage();
         Assert.assertEquals(successMsg, "The product has been added to your shopping cart");
-
     }
 
 

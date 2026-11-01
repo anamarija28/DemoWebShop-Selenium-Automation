@@ -14,11 +14,11 @@ public class ProductDetailsPage extends AbstractPage{
     private By addToWishlistButton = By.cssSelector("input.add-to-wishlist-button");
     private By quantityInput = By.cssSelector("input.qty-input");
 
-    public void addToCart() {
+    public void clickAddToCartButton() {
         wait.until(ExpectedConditions.elementToBeClickable(addToCartButton)).click();
     }
 
-    public void clickAddToWishlist() {
+    public void clickAddToWishlistButton() {
         wait.until(ExpectedConditions.elementToBeClickable(addToWishlistButton)).click();
     }
 

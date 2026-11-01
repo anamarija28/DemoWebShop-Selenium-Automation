@@ -6,12 +6,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class RegisterPage extends AbstractPage{
 
-    // konstruktor
     public RegisterPage (WebDriver driver) {
         super(driver);
     }
 
-    // lokatori
     private By maleGenderRadio = By.xpath("//input[@id='gender-male']");
     private By firstNameInput = By.xpath("//input[@id='FirstName']");
     private By lastNameInput = By.xpath("//input[@id='LastName']");
@@ -29,7 +27,6 @@ public class RegisterPage extends AbstractPage{
     private By confirmPasswordError  = By.xpath("//span[@data-valmsg-for='ConfirmPassword']");
     private By passwordLength = By.xpath("//span[text()='The password should have at least 6 characters.']");
 
-    // metodi i akcii
     public void register(String firstName, String lastName, String email, String password, String confirmPassword) {
         wait.until(ExpectedConditions.elementToBeClickable(maleGenderRadio)).click();
 
@@ -38,7 +35,6 @@ public class RegisterPage extends AbstractPage{
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput)).sendKeys(email);
         wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(password);
         wait.until(ExpectedConditions.visibilityOfElementLocated(confirmPasswordInput)).sendKeys(confirmPassword);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(registerButton)).click();
         clickRegisterButton();
     }
 
@@ -70,14 +66,6 @@ public class RegisterPage extends AbstractPage{
     public String getConfirmPasswordError() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(confirmPasswordError)).getText();
     }
-
-//    public String getInvalidEmailError(){
-//        return wait.until(ExpectedConditions.visibilityOfElementLocated(emailErrorMessage)).getText();
-//    }
-
-//    public String getPasswordMismatchError(){
-//        return wait.until(ExpectedConditions.visibilityOfElementLocated(confirmPasswordError)).getText();
-//    }
 
     public String getPasswordLengthValidation(){
         return wait.until(ExpectedConditions.visibilityOfElementLocated(passwordLength)).getText();

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 
 public class WishlistPage extends AbstractPage {
 
-
     public WishlistPage (WebDriver driver) {
         super(driver);
     }

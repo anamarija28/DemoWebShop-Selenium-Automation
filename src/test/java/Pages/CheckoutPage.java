@@ -13,8 +13,6 @@ public class CheckoutPage extends AbstractPage{
         super(driver);
     }
 
-    private By pageTitle = By.xpath("//div[@class='page-title']");
-
     private By billingFirstNameInput = By.xpath("//input[@class='text-box single-line' and @id='BillingNewAddress_FirstName']");
     private By billingLastNameInput = By.xpath("//input[@class='text-box single-line' and @id='BillingNewAddress_LastName']");
     private By billingEmailInput = By.xpath("//input[@class='text-box single-line' and @id='BillingNewAddress_Email']");
@@ -41,22 +39,6 @@ public class CheckoutPage extends AbstractPage{
     private By cardCodeInput = By.xpath("//input[@id='CardCode']");
     private By orderNumberText = By.cssSelector("ul.details li");
 
-    public String getPageTitle() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(pageTitle)).getText();
-    }
-
-
-    public String getBillingFirstName() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(billingFirstNameInput)).getAttribute("value");
-    }
-
-    public String getBillingLastName() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(billingLastNameInput)).getAttribute("value");
-    }
-
-    public String getBillingEmail() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(billingEmailInput)).getAttribute("value");
-    }
 
     public void fillOutBillingAddress(String firstName, String lastName, String email, String country, String city, String address1, String zip, String phone) {
 
@@ -64,19 +46,14 @@ public class CheckoutPage extends AbstractPage{
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingLastNameInput)).sendKeys(lastName);
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingEmailInput)).sendKeys(email);
 
-
-        // Селектирање од Dropdown
         Select selectCountry = new Select(driver.findElement(billingCountryDropdown));
         selectCountry.selectByVisibleText(country);
 
-        // Пополнување на останатите полиња
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingCityInput)).sendKeys(city);
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingAddress1Input)).sendKeys(address1);
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingZipPostalCodeInput)).sendKeys(zip);
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingPhoneNumberInput)).sendKeys(phone);
 
-
-        // Клик на Continue
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingContinueButton)).click();
     }
 
@@ -94,16 +71,15 @@ public class CheckoutPage extends AbstractPage{
     }
 
     public void selectShippingMethod() {
-        // Прво чекаме да биде видливо, бидејќи се појавува со анимација
+
         WebElement radioButton = wait.until(ExpectedConditions.elementToBeClickable(secondDayAirRadio));
 
-        // Ако не е веќе селектирано, тогаш кликни го
         if (!radioButton.isSelected()) {
             radioButton.click();
         }
     }
 
-    public void clickContinueShippingMethod() {
+    public void clickShippingMethodContinueButton() {
         wait.until(ExpectedConditions.elementToBeClickable(shippingMethodContinueButton)).click();
     }
 
@@ -126,7 +102,7 @@ public class CheckoutPage extends AbstractPage{
         return wait.until(ExpectedConditions.visibilityOfElementLocated(orderSuccessMessage)).getText();
     }
 
-    public void fillOutBillingAddressForLoggedInUser(String country, String city, String address, String zipCode, String phoneNumber){
+    public void fillBillingAddressForLoggedInUser(String country, String city, String address, String zipCode, String phoneNumber){
 
         Select selectCountry = new Select(driver.findElement(billingCountryDropdown));
         selectCountry.selectByVisibleText(country);
@@ -135,22 +111,20 @@ public class CheckoutPage extends AbstractPage{
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingZipPostalCodeInput)).sendKeys(zipCode);
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingPhoneNumberInput)).sendKeys(phoneNumber);
 
-
-        // Клик на Continue
         wait.until(ExpectedConditions.visibilityOfElementLocated(billingContinueButton)).click();
     }
 
     public void selectPaymentMethod() {
-        // Прво чекаме да биде видливо, бидејќи се појавува со анимација
+        // First waiting to be visible, because it appears with animation
         WebElement radioButton = wait.until(ExpectedConditions.elementToBeClickable(creditCardRadioButton));
 
-        // Ако не е веќе селектирано, тогаш кликни го
+        // If it's already not selected, click
         if (!radioButton.isSelected()) {
             radioButton.click();
         }
 
     }
-    public void fillOutPaymentInformation(String creditCardType, String cardHolderName, String cardNumberName, String expirationDateMonth, String expirationDateYear, String cardCodeName) {
+    public void fillPaymentInformation(String creditCardType, String cardHolderName, String cardNumberName, String expirationDateMonth, String expirationDateYear, String cardCodeName) {
 
         WebElement creditCardElement = wait.until(ExpectedConditions.visibilityOfElementLocated(creditCardTypeDropdown));
 
@@ -172,6 +146,8 @@ public class CheckoutPage extends AbstractPage{
     public String getOrderNumberText() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(orderNumberText)).getText();
     }
+
+
 
 
 }

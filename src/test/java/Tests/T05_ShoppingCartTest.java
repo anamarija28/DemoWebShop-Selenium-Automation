@@ -23,9 +23,8 @@ public class T05_ShoppingCartTest extends BaseClass {
         basePage.hoverComputersAndClickAccessories();
         productListingPage.addProductToCart("TCP Instructor Led Training");
 
-
         // Apparel and Shoes
-        basePage.clickApparelAndShoesTxtLink();
+        basePage.clickApparelAndShoesLink();
         productListingPage.addProductToCart("Blue Jeans");
         productListingPage.addProductToCart("Casual Golf Belt");
 
@@ -44,7 +43,6 @@ public class T05_ShoppingCartTest extends BaseClass {
 
         int productCount = shoppingCartPage.getNumberOfProductsInCart();
         Assert.assertEquals(productCount, 0, "The shopping cart is not empty!");
-
     }
 
 
@@ -52,7 +50,6 @@ public class T05_ShoppingCartTest extends BaseClass {
     public void verifyProductsInCart() {
         setupCartWithProducts();
 
-        // Дефинирај КОИ продукти очекуваш да ги видиш
         List<String> expectedProducts = Arrays.asList(
                 "Build your own computer",
                 "TCP Instructor Led Training",
@@ -60,13 +57,10 @@ public class T05_ShoppingCartTest extends BaseClass {
                 "Casual Golf Belt"
         );
 
-        // Земи ги РЕАЛНИТЕ продукти
         List<String> actualProducts = shoppingCartPage.getAllProductNames();
 
-        // 4. Верификација: Провери дали големината на листите е иста
         Assert.assertEquals(actualProducts.size(), expectedProducts.size(), "The number of products in the cart is wrong!");
 
-        // 5. Верификација: Провери дали сите очекувани имиња се присутни во реалната листа
         for (String expectedName : expectedProducts) {
             Assert.assertTrue(actualProducts.contains(expectedName),
             "The product " + expectedName + "is not found in the cart!");
@@ -81,22 +75,17 @@ public class T05_ShoppingCartTest extends BaseClass {
 
         String actualQuantity = shoppingCartPage.getProductQuantity("Build your own computer");
         Assert.assertEquals(actualQuantity, "2", "The quantity of the product is incorrect!");
-
     }
 
     @Test
-    public void removeProductsFromCart() throws InterruptedException {
+    public void removeProductsFromCart() {
         setupCartWithProducts();
 
-        shoppingCartPage.selectRemoveCheckboxForProduct("Blue Jeans");
-        Thread.sleep(2000);
-        shoppingCartPage.clickUpdateCartButton();
-        Thread.sleep(2000);
+        shoppingCartPage.removeProduct("Blue Jeans");
 
         List<String> remainingProducts = shoppingCartPage.getAllProductNames();
 
         Assert.assertFalse(remainingProducts.contains("Blue Jeans"), "The product 'Blue Jeans' is not removed from the shopping cart!");
-
     }
 
 
@@ -112,7 +101,6 @@ public class T05_ShoppingCartTest extends BaseClass {
         double actualTotal = shoppingCartPage.getCartTotalPrice();
 
         Assert.assertEquals(actualTotal, expectedTotal, "The total price in the shopping cart is not correct calculated!");
-
     }
 
 

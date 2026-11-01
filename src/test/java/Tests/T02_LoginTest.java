@@ -10,7 +10,6 @@ public class T02_LoginTest extends BaseClass {
     @Test
     public void testValidLogin(){
 
-        // Racno kreiran
         String email = "testtuserr@mail.com";
         String password = "Lozinka123@";
 

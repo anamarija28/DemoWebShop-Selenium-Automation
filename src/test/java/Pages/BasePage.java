@@ -13,12 +13,9 @@ public class BasePage extends AbstractPage{
         super(driver);
     }
 
-
-    // Заеднички локатори за Login, Register, Shopping Cart
     private By cartLinkForHover = By.id("topcartlink");
     private By headerCartQty = By.className("cart-qty");
 
-    // lokatori
     private By registerLink = By.xpath("//a[@class='ico-register']");
     private By loginLink = By.xpath("//a[@class='ico-login']");
     private By loggedInUserEmail = By.xpath("(//a[@class='account'])[1]");
@@ -37,7 +34,6 @@ public class BasePage extends AbstractPage{
     private By wishlistLink = By.xpath("//a[@class='ico-wishlist']");
 
 
-    // metodi i akcii
     public void clickRegisterLink(){
         wait.until(ExpectedConditions.elementToBeClickable(registerLink)).click();
     }
@@ -55,22 +51,17 @@ public class BasePage extends AbstractPage{
         wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
     }
 
-
-    public void clickApparelAndShoesTxtLink() {
+    public void clickApparelAndShoesLink() {
         wait.until(ExpectedConditions.elementToBeClickable(apparelShoesMenuLink)).click();
     }
-
 
     public void hoverComputersAndClickDesktops() {
         WebElement computers = wait.until(ExpectedConditions.visibilityOfElementLocated(computersMenu));
 
-        // Креираме објект од Actions класата
         Actions actions = new Actions(driver);
 
-        // Се движиме до главното мени - Hover
         actions.moveToElement(computers).perform();
 
-        // Чекаме подменито да стане видливо и кликаме
         WebElement desktops = wait.until(ExpectedConditions.elementToBeClickable(desktopsSubMenu));
         desktops.click();
 
@@ -89,16 +80,14 @@ public class BasePage extends AbstractPage{
 
     public String getFlyoutProductQuantity() {
 
-        // Скрола малце нагоре до кошничката
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
 
         WebElement cart = wait.until(ExpectedConditions.visibilityOfElementLocated(cartLinkForHover));
 
         Actions actions = new Actions(driver);
-        actions.moveToElement(cart).perform(); // hover
+        actions.moveToElement(cart).perform();
 
         return wait.until(ExpectedConditions.visibilityOfElementLocated(flyoutProductQuantity)).getText();
-
     }
 
     public String getHeaderCartQty(String expectedQty) {
@@ -115,14 +104,13 @@ public class BasePage extends AbstractPage{
         WebElement cart = wait.until(ExpectedConditions.visibilityOfElementLocated(cartLinkForHover));
 
         Actions actions = new Actions(driver);
-        actions.moveToElement(cart).perform(); // hover
+        actions.moveToElement(cart).perform();
 
         return wait.until(ExpectedConditions.visibilityOfElementLocated(flyoutItemsCountMessage)).getText();
     }
 
     public void clickHeaderShoppingCart() {
         wait.until(ExpectedConditions.elementToBeClickable(cartLinkForClick)).click();
-
     }
 
     public void clickLogOut() {
@@ -131,7 +119,6 @@ public class BasePage extends AbstractPage{
 
     public void clickHeaderWishList() {
         wait.until(ExpectedConditions.elementToBeClickable(wishlistLink)).click();
-
     }
 
 }

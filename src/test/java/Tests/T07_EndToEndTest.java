@@ -6,11 +6,10 @@ import org.testng.annotations.Test;
 
 public class T07_EndToEndTest extends BaseClass {
 
-    public static String uniqueEmail = "testuser" + System.currentTimeMillis() + "@mailinator.com";
-
-
     @Test
-    public void completelyEndToEnd() throws InterruptedException{
+    public void completelyEndToEnd() {
+
+        String uniqueEmail = "testuser" + System.currentTimeMillis() + "@mailinator.com";
 
         // Register a new user
         basePage.clickRegisterLink();
@@ -20,42 +19,37 @@ public class T07_EndToEndTest extends BaseClass {
         Assert.assertEquals(actualSuccessMessage, "Your registration completed");
 
         // Add a product to Wishlist and update quantity
-        basePage.clickApparelAndShoesTxtLink();
+        basePage.clickApparelAndShoesLink();
         productListingPage.clickPageNumber("2");
         productListingPage.selectProductByTitle("Men's Wrinkle Free Long Sleeve");
         productDetailsPage.setQuantity("2");
-        productDetailsPage.clickAddToWishlist();
-
-        basePage.clickApparelAndShoesTxtLink();
+        productDetailsPage.clickAddToWishlistButton();
+        basePage.clickApparelAndShoesLink();
         productListingPage.selectProductByTitle("Blue and green Sneaker");
-        productDetailsPage.clickAddToWishlist();
-
+        productDetailsPage.clickAddToWishlistButton();
 
         // Add a product to the Cart
-        basePage.clickApparelAndShoesTxtLink();
+        basePage.clickApparelAndShoesLink();
         productListingPage.selectProductByTitle("Blue Jeans");
-        productDetailsPage.addToCart();
+        productDetailsPage.clickAddToCartButton();
 
         // Navigating to Wishlist and adding the product to the Cart
         basePage.clickHeaderWishList();
         wishlistPage.selectAllAddToCartCheckboxes();
         wishlistPage.clickAddToCartButton();
 
-
         // Navigating to the Cart Page and updating the Cart
         shoppingCartPage.updateQuantityForProduct("Blue and green Sneaker", "2");
-        shoppingCartPage.clickUpdateCartButton();
         shoppingCartPage.acceptTermsAndCheckout();
 
-
         // Checkout
-        checkoutPage.fillOutBillingAddressForLoggedInUser("United States", "Chicago", "Bolingbrook 12 Ave", "12355", "+1 5056487333");
+        checkoutPage.fillBillingAddressForLoggedInUser("United States", "Chicago", "Bolingbrook 12 Ave", "12355", "+1 5056487333");
         checkoutPage.clickShippingAddressContinueButton();
         checkoutPage.selectShippingMethod();
-        checkoutPage.clickContinueShippingMethod();
+        checkoutPage.clickShippingMethodContinueButton();
         checkoutPage.selectPaymentMethod();
         checkoutPage.clickPaymentMethodContinueButton();
-        checkoutPage.fillOutPaymentInformation("Master card", "Ferdinanda Upshall", "5433300000000141", "11", "2027", "1236");
+        checkoutPage.fillPaymentInformation("Master card", "Ferdinanda Upshall", "5433300000000141", "11", "2027", "1236");
         checkoutPage.clickPaymentInfoContinueButton();
         checkoutPage.clickConfirmOrderButton();
 
@@ -64,18 +58,13 @@ public class T07_EndToEndTest extends BaseClass {
         Assert.assertEquals(actualMessage, expectedMessage, "Нарачката не беше успешна!");
 
 
-        // Tuka go zemame dinamickiot tekst (pr. "Order number: 2300259")
         String orderText = checkoutPage.getOrderNumberText();
 
-        // Proveruvame dali tekstot voopsto go sodrzi glavniot zbor
         Assert.assertTrue(orderText.contains("Order number:"), "Текстот за број на нарачка не е пронајден!");
 
-        // Go cistime tekstot za da ni ostani samo brojkata i proveruvame deka ne e prazna
+        // We clean the text to keep only the number and check that it is not empty.
         String justTheNumber = orderText.replace("Order number:", "").trim();
         Assert.assertFalse(justTheNumber.isEmpty(), "Бројот на нарачката е празен!");
-
-        // Mozis da si isprintas vo konzola za da vidis deka narackata uspesno se kreirala
-        System.out.println("Успешно креирана нарачка со динамички број: " + justTheNumber);
     }
 
 }

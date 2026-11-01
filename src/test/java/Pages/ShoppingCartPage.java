@@ -15,7 +15,6 @@ public class ShoppingCartPage extends AbstractPage{
     private By cartRows = By.xpath("//tr[@class='cart-item-row']");
     private By emptyCartMessage = By.className("order-summary-content");
     private By productNameLinks = By.className("product-name");
-    private By quantityInputs = By.xpath("//input[@class='qty-input']");
     private By updateCartButton = By.xpath("//input[@value='Update shopping cart']");
     private By productSubtotals = By.cssSelector(".product-subtotal");
     private By cartTotalPrice = By.cssSelector(".product-price.order-total");
@@ -50,10 +49,13 @@ public class ShoppingCartPage extends AbstractPage{
         wait.until(ExpectedConditions.elementToBeClickable(updateCartButton)).click();
     }
 
-    public void updateQuantityForProduct(String productName, String quantity) {
-        String dynamicXpath = "//tr[contains(., '" + productName + "')]//input[@class='qty-input']";
+    private By quantityInputFor(String productName) {
+        return By.xpath("//a[text()='" + productName + "']/ancestor::tr//input[@class='qty-input']");
+    }
 
-        WebElement qtyField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicXpath)));
+    public void updateQuantityForProduct(String productName, String quantity) {
+
+        WebElement qtyField = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInputFor(productName)));
 
         qtyField.click();
         qtyField.sendKeys(Keys.CONTROL + "a");
@@ -61,15 +63,12 @@ public class ShoppingCartPage extends AbstractPage{
         qtyField.sendKeys(quantity);
 
         clickUpdateCartButton();
+        wait.until(ExpectedConditions.stalenessOf(qtyField));
     }
 
     public String getProductQuantity(String productName) {
-        // Го користиме истиот динамичен XPath за да го најдеме точното поле
-        String dynamicXpath = "//tr[contains(., '" + productName + "')]//input[@class='qty-input']";
 
-        WebElement qtyField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicXpath)));
-
-        // Вредноста во input полињата се чува во атрибутот "value"
+        WebElement qtyField = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInputFor(productName)));
         return qtyField.getAttribute("value");
     }
 
@@ -83,10 +82,16 @@ public class ShoppingCartPage extends AbstractPage{
     }
 
 
-    // SUMA NA PRODUKTITE VO KOSNICKATA
+    public void removeProduct(String productName) {
+        selectRemoveCheckboxForProduct(productName);
+        clickUpdateCartButton();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//a[text()='" + productName + "']")));
+    }
+
+
     public double calculateSubtotalsSum() {
 
-        // Cekame site sumi da bidat prisutni vo HTML-ot
         List<WebElement> subtotals = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productSubtotals));
 
         double sum = 0;
@@ -95,7 +100,6 @@ public class ShoppingCartPage extends AbstractPage{
 
             String text = element.getText().trim();
             if (!text.isEmpty()) {
-                // Gi brisime site karakteri sto ne se brojki ili tocka
                 String cleanText = text.replaceAll("[^0-9.]", "");
                 sum += Double.parseDouble(cleanText);
             }
@@ -107,24 +111,13 @@ public class ShoppingCartPage extends AbstractPage{
         WebElement totalElement = wait.until(ExpectedConditions.visibilityOfElementLocated(cartTotalPrice));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", totalElement);
 
-        String totalText = wait.until(ExpectedConditions.visibilityOfElementLocated(cartTotalPrice)).getText();
-        return Double.parseDouble(totalText);
-
+        return Double.parseDouble(totalElement.getText());
     }
-
-
 
 
     public void acceptTermsAndCheckout() {
         wait.until(ExpectedConditions.elementToBeClickable(termsOfServiceCheckbox)).click();
         wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
     }
-
-
-
-
-
-
-
 
 }

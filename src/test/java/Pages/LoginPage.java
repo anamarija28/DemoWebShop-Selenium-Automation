@@ -8,14 +8,12 @@ public class LoginPage extends AbstractPage{
 //    private WebDriver driver;
 //    private WebDriverWait wait;
 
-    // konstruktor
     public LoginPage(WebDriver driver) {
 //        this.driver = driver;
 //        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         super (driver);
     }
 
-    // lokatori
     private By emailInput = By.xpath("//input[@id='Email']");
     private By passwordInput = By.xpath("//input[@id='Password']");
     private By loginButton = By.cssSelector(".button-1.login-button");
@@ -24,8 +22,7 @@ public class LoginPage extends AbstractPage{
     private By incorrectCredentialsMessage = By.xpath("//li[text()='The credentials provided are incorrect']");
     private By accountNotFoundMessage = By.xpath("//li[text()='No customer account found']");
 
-    // metodi i akcii
-    //  Method for entering user credentials
+
     public void login(String email, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput)).sendKeys(email);
         wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(password);
@@ -34,7 +31,6 @@ public class LoginPage extends AbstractPage{
 
 
     public boolean isLoginErrorDisplayed() {
-        // Враќа true ако има порака за грешка, false ако ја нема
         return driver.findElements(loginErrorSummary).size() > 0;
     }
 

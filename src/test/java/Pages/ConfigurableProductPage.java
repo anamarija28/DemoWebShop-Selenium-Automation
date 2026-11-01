@@ -45,13 +45,9 @@ public class ConfigurableProductPage extends AbstractPage{
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(ramDropdown));
         Select select = new Select(dropdown);
 
-        // Печатиме во конзола за да видиш што се обидува Selenium да избере (за дебагирање)
-        System.out.println("Se obiduvam da selektiram RAM: " + value);
-
         select.selectByValue(value);
     }
 
-    // Методи
     public void selectHdd400Gb() {
         WebElement radioButton = wait.until(ExpectedConditions.elementToBeClickable(hdd400gbRadioButton));
         radioButton.click();
@@ -62,8 +58,6 @@ public class ConfigurableProductPage extends AbstractPage{
         radioButton.click();
     }
 
-
-    // Методи za Software - poedinecen za sekoe selektiranje
     public void selectOffice() {
         wait.until(ExpectedConditions.elementToBeClickable(officeCheckbox)).click();
     }

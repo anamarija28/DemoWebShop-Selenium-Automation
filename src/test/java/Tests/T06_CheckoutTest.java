@@ -27,43 +27,43 @@ public class T06_CheckoutTest extends BaseClass{
         shoppingCartPage.acceptTermsAndCheckout();
     }
 
+    private void completeCheckout() {
+        checkoutPage.selectShippingMethod();
+        checkoutPage.clickShippingMethodContinueButton();
+        checkoutPage.clickPaymentMethodContinueButton();
+        checkoutPage.clickPaymentInfoContinueButton();
+        checkoutPage.clickConfirmOrderButton();
+    }
+
     @Test
-    public void loggedInUserCheckout() throws InterruptedException {
+    public void loggedInUserCheckout() {
 
         proceedToCheckoutLoggedIn();
 
         checkoutPage.clickBillingAddressContinueButton();
         checkoutPage.clickShippingAddressContinueButton();
-        checkoutPage.selectShippingMethod();
-        checkoutPage.clickContinueShippingMethod();
-        checkoutPage.clickPaymentMethodContinueButton();
-        checkoutPage.clickPaymentInfoContinueButton();
-        checkoutPage.clickConfirmOrderButton();
+        completeCheckout();
 
         String expectedMessage = "Your order has been successfully processed!";
         String actualMessage = checkoutPage.getOrderSuccessMessage();
 
         Assert.assertEquals(actualMessage, expectedMessage, "Нарачката не беше успешна!");
-
     }
 
     @Test
-    public void guestUserCheckout() throws InterruptedException {
+    public void guestUserCheckout() {
+
         proceedToCheckoutGuestUser();
+
         checkoutAsGuestPage.clickCheckoutAsGuest();
         checkoutPage.fillOutBillingAddress("Liza", "Toun", "lizatoun@mailinator.com","United States", "Chicago", "Avenue Test 123", "1000", "+15091236666");
         checkoutPage.clickShippingAddressContinueButton();
-        checkoutPage.selectShippingMethod();
-        checkoutPage.clickContinueShippingMethod();
-        checkoutPage.clickPaymentMethodContinueButton();
-        checkoutPage.clickPaymentInfoContinueButton();
-        checkoutPage.clickConfirmOrderButton();
+        completeCheckout();
 
         String expectedMessage = "Your order has been successfully processed!";
         String actualMessage = checkoutPage.getOrderSuccessMessage();
 
         Assert.assertEquals(actualMessage, expectedMessage, "Нарачката не беше успешна!");
-
     }
 
 }
