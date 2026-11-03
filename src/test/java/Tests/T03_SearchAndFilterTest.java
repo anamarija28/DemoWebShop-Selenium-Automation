@@ -23,13 +23,19 @@ public class T03_SearchAndFilterTest extends BaseClass {
         basePage.searchProduct(searchTerm);
 
         boolean isUrlCorrect = searchResultsPage.isUrlContaining("q=" + searchTerm);
-        Assert.assertTrue(searchResultsPage.isUrlContaining("q=" + searchTerm), "The URL does not contain the search term");
+        Assert.assertTrue(isUrlCorrect, "The URL does not contain the search term");
 
         boolean resultsCount = searchResultsPage.areProductsDisplayed();
         Assert.assertTrue(resultsCount, "The products for the searched keyword are not displayed!");
 
         String actualProduct = searchResultsPage.getSearchFieldValue();
         Assert.assertEquals(actualProduct, searchTerm);
+
+        List<String> productNames = searchResultsPage.getProductNames();
+        for (String name : productNames) {
+            Assert.assertTrue(name.toLowerCase().contains(searchTerm),
+                    "The product '" + name + "' does not match the search term '" + searchTerm + "'");
+        }
     }
 
     @Test
@@ -49,7 +55,6 @@ public class T03_SearchAndFilterTest extends BaseClass {
         Collections.sort(expectedPricesFromHigh, Collections.reverseOrder());
 
         Assert.assertEquals(actualPricesFromHigh, expectedPricesFromHigh, "The prices are not correctly sorted from High to Low!");
-
     }
 
     @Test
@@ -77,14 +82,13 @@ public class T03_SearchAndFilterTest extends BaseClass {
         navigateToApparelAndShoesAndValidate();
 
         productListingPage.selectDisplayPerPageOptions("4");
-        Assert.assertTrue(productListingPage.getNumberOfProductsDisplayed() <= 4, "There are more than 4 products displayed");
+        Assert.assertEquals(productListingPage.getNumberOfProductsDisplayed(), 4, "Expected 4 products on the page");
 
         productListingPage.selectDisplayPerPageOptions("8");
-        Assert.assertTrue(productListingPage.getNumberOfProductsDisplayed() <= 8, "There are more than 8 products displayed");
+        Assert.assertEquals(productListingPage.getNumberOfProductsDisplayed(), 8, "Expected 8 products on the page");
 
         productListingPage.selectDisplayPerPageOptions("12");
         Assert.assertTrue(productListingPage.getNumberOfProductsDisplayed() <= 12, "There are more than 12 products displayed");
-
     }
 
     @Test
@@ -136,5 +140,4 @@ public class T03_SearchAndFilterTest extends BaseClass {
         productListingPage.goToFirstPage();
         Assert.assertFalse(productListingPage.isPreviousPageButtonDisplayed(), "Previous button should not be visible on the first page");
     }
-
 }

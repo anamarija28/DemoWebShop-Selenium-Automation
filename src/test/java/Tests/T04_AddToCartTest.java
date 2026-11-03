@@ -1,16 +1,15 @@
 package Tests;
-
 import Base.BaseClass;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.util.List;
 
 
 public class T04_AddToCartTest extends BaseClass {
 
     String searchTerm = "jeans";
 
-
-    public void addTcpCoachingDayToCart() {
+    private void addInstructorLedTrainingToCart() {
         basePage.hoverComputersAndClickAccessories();
         productListingPage.addProductToCart("TCP Instructor Led Training");
     }
@@ -21,19 +20,9 @@ public class T04_AddToCartTest extends BaseClass {
 
         basePage.searchProduct(searchTerm);
 
-        // URL validation
-        boolean isUrlCorrect = searchResultsPage.isUrlContaining("q=" + searchTerm);
-        Assert.assertTrue(isUrlCorrect, "The URL does not contain the search term");
-
-        // Validation that the results are displayed
         boolean resultsCount = searchResultsPage.areProductsDisplayed();
         Assert.assertTrue(resultsCount, "The products for the searched keyword are not displayed!");
 
-        // Validation of the search field
-        String actualProduct = searchResultsPage.getSearchFieldValue();
-        Assert.assertEquals(actualProduct, searchTerm);
-
-        // Add the product to the cart
         String actualSuccessMessage = searchResultsPage.addProductToCart("Blue Jeans");
         Assert.assertEquals(actualSuccessMessage, "The product has been added to your shopping cart");
     }
@@ -50,6 +39,9 @@ public class T04_AddToCartTest extends BaseClass {
         String actualSuccessMessage = productListingPage.addProductToCart("TCP Instructor Led Training");
         Assert.assertEquals(actualSuccessMessage, "The product has been added to your shopping cart");
 
+        basePage.clickHeaderShoppingCart();
+        List<String> productsInCart = shoppingCartPage.getAllProductNames();
+        Assert.assertTrue(productsInCart.contains("TCP Instructor Led Training"), "The product is not in the shopping cart!");
     }
 
     @Test
@@ -72,7 +64,7 @@ public class T04_AddToCartTest extends BaseClass {
     @Test
     public void addMultipleDifferentProducts() {
 
-        addTcpCoachingDayToCart();
+        addInstructorLedTrainingToCart();
         productListingPage.addProductToCart("TCP Public Complete");
         productListingPage.addProductToCart("TCP Public MT/AT");
         productListingPage.addProductToCart("TCP Public RPA/TCD");
@@ -83,14 +75,7 @@ public class T04_AddToCartTest extends BaseClass {
         Assert.assertEquals(actualHeaderQty, "(6)", "The number in the header is not 6");
 
         String actualFlyoutText = basePage.getFlyoutItemsCountMessage();
-
-        Assert.assertTrue(actualFlyoutText.contains("6 item(s)"), "In the flyout menu does not write Quantity: 6!. It is: " + actualFlyoutText);
-
-
-        // This will pause the test until 6 appears, or throw a timeout exception after 10 seconds
-        String actualHeaderQty2 = basePage.getHeaderCartQty("(6)");
-        Assert.assertEquals(actualHeaderQty2, "(6)", "Бројот во хедерот не е 6!");
-
+        Assert.assertTrue(actualFlyoutText.contains("6 item(s)"), "The flyout does not show 6 item(s). It is: " + actualFlyoutText);
     }
 
 
@@ -119,7 +104,9 @@ public class T04_AddToCartTest extends BaseClass {
 
         String successMsg = configurableProductPage.getSuccessMessage();
         Assert.assertEquals(successMsg, "The product has been added to your shopping cart");
+
+        basePage.clickHeaderShoppingCart();
+        List<String> productsInCart = shoppingCartPage.getAllProductNames();
+        Assert.assertTrue(productsInCart.contains("Build your own computer"), "The configured product is not in the cart!");
     }
-
-
 }

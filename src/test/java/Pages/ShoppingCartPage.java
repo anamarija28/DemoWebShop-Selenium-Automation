@@ -20,6 +20,16 @@ public class ShoppingCartPage extends AbstractPage{
     private By cartTotalPrice = By.cssSelector(".product-price.order-total");
     private By termsOfServiceCheckbox = By.xpath("//input[@id='termsofservice' and @type='checkbox']");
     private By checkoutButton = By.xpath("//button[@id='checkout' and @value='checkout']");
+    private By termsWarningBox = By.id("terms-of-service-warning-box");
+
+
+    public void clickCheckoutWithoutAcceptingTerms() {
+        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+    }
+
+    public String getTermsWarningMessage() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(termsWarningBox)).getText();
+    }
 
     public String getPageTitle() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(pageTitle)).getText();

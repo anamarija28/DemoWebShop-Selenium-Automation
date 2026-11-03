@@ -9,8 +9,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseClass {
+
+    private static final String BASE_URL = "https://demowebshop.tricentis.com/";
+
     protected WebDriver driver;
-    protected WebDriverWait wait;
+//    protected WebDriverWait wait;
 
     protected RegisterPage registerPage;
     protected RegisterResultPage registerResultPage;
@@ -33,7 +36,7 @@ public class BaseClass {
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://demowebshop.tricentis.com/");
+        driver.get(BASE_URL);
 
         registerPage = new RegisterPage(driver);
         registerResultPage = new RegisterResultPage(driver);
@@ -52,6 +55,9 @@ public class BaseClass {
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
+
 }

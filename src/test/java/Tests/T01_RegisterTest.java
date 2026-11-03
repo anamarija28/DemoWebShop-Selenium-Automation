@@ -1,5 +1,4 @@
 package Tests;
-
 import Base.BaseClass;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,8 +13,8 @@ public class T01_RegisterTest extends BaseClass {
         basePage.clickRegisterLink();
         registerPage.register("Ime", "Prezime", email, "lozinka123@", "lozinka123@");
 
-          Assert.assertEquals(registerResultPage.successRegistration(), "Your registration completed");
-
+        Assert.assertEquals(registerResultPage.successRegistration(), "Your registration completed");
+        Assert.assertEquals(basePage.getLoggedInUserEmail(), email, "The registered user is not logged in!");
     }
 
     @Test
@@ -35,7 +34,6 @@ public class T01_RegisterTest extends BaseClass {
         registerPage.register("Ime", "Prezime", email, "lozinka123@", "lozinka123@");
 
         Assert.assertTrue(registerPage.getRegistrationErrorMessage().contains("The specified email already exists"));
-
     }
 
     @Test
@@ -79,5 +77,4 @@ public class T01_RegisterTest extends BaseClass {
 
         Assert.assertEquals(registerPage.getPasswordLengthValidation(), "The password should have at least 6 characters.");
     }
-
 }

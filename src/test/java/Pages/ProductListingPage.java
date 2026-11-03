@@ -20,7 +20,7 @@ public class ProductListingPage extends AbstractPage {
     private By pageTitle = By.cssSelector(".page-title");
     private By productNameLinks = By.cssSelector(".product-title");
     private String productLinkByTitleXpath = "//h2[@class='product-title']/a[normalize-space()=\"%s\"]";
-    private String addToCartButtonByTitleXpath = "//a[text()='%s']/ancestor::div[@class='details']//input[@value='Add to cart']";
+    private String addToCartButtonByTitleXpath = "//a[text()=\"%s\"]/ancestor::div[@class='details']//input[@value='Add to cart']";
     private By successMessage= By.xpath("//div[@id='bar-notification' and contains(@class,'success')]//p[@class='content']");
 
     private By sortByDropdown = By.id("products-orderby");
@@ -122,11 +122,11 @@ public class ProductListingPage extends AbstractPage {
     }
 
     public boolean isGridViewDisplayed() {
-        return driver.findElements(gridView).size() > 0;
+        return !driver.findElements(gridView).isEmpty();
     }
 
     public boolean isListViewDisplayed() {
-        return driver.findElements(listView).size() > 0;
+        return !driver.findElements(listView).isEmpty();
     }
 
 
@@ -140,7 +140,7 @@ public class ProductListingPage extends AbstractPage {
     }
 
     public void goToLastPage() {
-        while(driver.findElements(nextPageButton).size() > 0) {
+        while(!driver.findElements(nextPageButton).isEmpty()) {
             WebElement next = wait.until(ExpectedConditions.elementToBeClickable(nextPageButton));
             next.click();
 
@@ -149,7 +149,7 @@ public class ProductListingPage extends AbstractPage {
     }
 
     public void goToFirstPage() {
-        while(driver.findElements(previousPageButton).size() > 0) {
+        while(!driver.findElements(previousPageButton).isEmpty()) {
             WebElement previous = wait.until(ExpectedConditions.elementToBeClickable(previousPageButton));
             previous.click();
 

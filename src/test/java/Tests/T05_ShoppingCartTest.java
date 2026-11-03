@@ -1,20 +1,17 @@
 package Tests;
-
 import Base.BaseClass;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class T05_ShoppingCartTest extends BaseClass {
 
-    public void setupCartWithProducts() {
+    private void setupCartWithProducts() {
 
         //Computers -> Desktops
         basePage.hoverComputersAndClickDesktops();
         productListingPage.selectProductByTitle("Build your own computer");
-
 
         configurableProductPage.selectHdd400Gb();
         configurableProductPage.clickAddToCartButton();
@@ -86,6 +83,11 @@ public class T05_ShoppingCartTest extends BaseClass {
         List<String> remainingProducts = shoppingCartPage.getAllProductNames();
 
         Assert.assertFalse(remainingProducts.contains("Blue Jeans"), "The product 'Blue Jeans' is not removed from the shopping cart!");
+
+        Assert.assertEquals(remainingProducts.size(), 3, "Expected 3 products to remain in the cart!");
+        Assert.assertTrue(remainingProducts.contains("Build your own computer"), "'Build your own computer' should still be in the cart!");
+        Assert.assertTrue(remainingProducts.contains("TCP Instructor Led Training"), "'TCP Instructor Led Training' should still be in the cart!");
+        Assert.assertTrue(remainingProducts.contains("Casual Golf Belt"), "'Casual Golf Belt' should still be in the cart!");
     }
 
 
@@ -94,24 +96,21 @@ public class T05_ShoppingCartTest extends BaseClass {
 
         setupCartWithProducts();
 
-        // Presmetuvame KOLKU treba da bidi (zbir od site redovi)
         double expectedTotal = shoppingCartPage.calculateSubtotalsSum();
-
-        // Citame kolku sajtot VELI deka e ustvari (dolu desno)
         double actualTotal = shoppingCartPage.getCartTotalPrice();
 
         Assert.assertEquals(actualTotal, expectedTotal, "The total price in the shopping cart is not correct calculated!");
     }
 
-
     @Test
-    public void verifyCartPersistLogginLogoutLogin() {
+    public void verifyCartPersistsAfterLogoutAndLogin() {
 
-        String email = "testtuserr@mail.com";
+        String email = "testuser" + System.currentTimeMillis() + "@mailinator.com";
         String password = "Lozinka123@";
 
-        basePage.clickLoginLink();
-        loginPage.login(email, password);
+        basePage.clickRegisterLink();
+        registerPage.register("Ime", "Prezime", email, password, password);
+        registerResultPage.successRegistration();
 
         setupCartWithProducts();
 
@@ -119,14 +118,11 @@ public class T05_ShoppingCartTest extends BaseClass {
 
         basePage.clickLogOut();
         basePage.clickLoginLink();
-
-
         loginPage.login(email, password);
         basePage.clickHeaderShoppingCart();
 
         List<String> actualProducts = shoppingCartPage.getAllProductNames();
-        Assert.assertEquals(actualProducts, expectedProducts, "The products are not displayed or they are not the same after re-logging!");
+        Assert.assertEquals(actualProducts, expectedProducts, "The products are not the same after re-logging!");
     }
-
 }
 

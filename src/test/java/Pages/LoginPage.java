@@ -26,7 +26,7 @@ public class LoginPage extends AbstractPage{
     public void login(String email, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput)).sendKeys(email);
         wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(password);
-        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+        clickLoginButton();
     }
 
 

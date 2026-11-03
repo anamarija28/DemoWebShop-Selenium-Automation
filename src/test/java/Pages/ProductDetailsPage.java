@@ -2,6 +2,7 @@ package Pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ProductDetailsPage extends AbstractPage{
@@ -22,8 +23,9 @@ public class ProductDetailsPage extends AbstractPage{
         wait.until(ExpectedConditions.elementToBeClickable(addToWishlistButton)).click();
     }
 
-    public void setQuantity(String qty) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput)).clear();
-        driver.findElement(quantityInput).sendKeys(qty);
+    public void setQuantity(String quantity) {
+        WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
+        input.clear();
+        input.sendKeys(quantity);
     }
 }

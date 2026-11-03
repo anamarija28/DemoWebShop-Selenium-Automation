@@ -38,7 +38,7 @@ public class CheckoutPage extends AbstractPage{
     private By expiryYearDropdown = By.xpath("//select[@id='ExpireYear']");
     private By cardCodeInput = By.xpath("//input[@id='CardCode']");
     private By orderNumberText = By.cssSelector("ul.details li");
-
+    private By confirmOrderButton = By.cssSelector(".confirm-order-next-step-button");
 
     public void fillOutBillingAddress(String firstName, String lastName, String email, String country, String city, String address1, String zip, String phone) {
 
@@ -92,10 +92,10 @@ public class CheckoutPage extends AbstractPage{
     }
 
     public void clickConfirmOrderButton() {
-        WebElement confirmBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".confirm-order-next-step-button")));
+        WebElement confirmButton = wait.until(ExpectedConditions.elementToBeClickable(confirmOrderButton));
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", confirmBtn);
-        confirmBtn.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", confirmButton);
+        confirmButton.click();
     }
 
     public String getOrderSuccessMessage() {

@@ -13,6 +13,7 @@ public class BasePage extends AbstractPage{
         super(driver);
     }
 
+
     private By cartLinkForHover = By.id("topcartlink");
     private By headerCartQty = By.className("cart-qty");
 
@@ -115,6 +116,10 @@ public class BasePage extends AbstractPage{
 
     public void clickLogOut() {
         wait.until(ExpectedConditions.elementToBeClickable(logoutLink)).click();
+    }
+
+    public boolean isLoginLinkDisplayed() {
+        return !driver.findElements(loginLink).isEmpty();
     }
 
     public void clickHeaderWishList() {
